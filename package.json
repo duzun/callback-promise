@@ -1,6 +1,6 @@
 {
   "name": "callback-promise",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Convert callback style APIs to Promise based APIs",
   "main": "cp.js",
   "scripts": {
@@ -21,5 +21,13 @@
   "bugs": {
     "url": "https://github.com/duzun/callback-promise/issues"
   },
-  "homepage": "https://github.com/duzun/callback-promise#readme"
+  "homepage": "https://github.com/duzun/callback-promise#readme",
+  "verup": {
+    "files": [
+      "cp.js"
+    ]
+  },
+  "devDependencies": {
+    "verup": "^1.3.3"
+  }
 }

@@ -3,7 +3,7 @@
  *
  * https://github.com/duzun/callback-promise
  *
- * @version 0.0.1
+ * @version 0.0.2
  */
 // -----------------------------------------------------------
 // -----------------------------------------------------------
@@ -34,7 +34,7 @@ function cp(_this, _fn, _resArgNo, _errArgNo) {
     return function () {
         var args = arguments;
         var promise = new cp.Promise(function (_resolve, _reject) {
-            var _cb = resolve;
+            var _cb = _resolve;
             if ( typeof _resArgNo == 'function' ) {
                 _cb = function (res) {
                     try {
