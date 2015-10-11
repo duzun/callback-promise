@@ -1,0 +1,25 @@
+{
+  "name": "callback-promise",
+  "version": "0.0.1",
+  "description": "Convert callback style APIs to Promise based APIs",
+  "main": "cp.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/duzun/callback-promise.git"
+  },
+  "keywords": [
+    "promise",
+    "async",
+    "callback",
+    "utils"
+  ],
+  "author": "Dumitru Uzun <contanct@duzun.me> (https://DUzun.Me)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/duzun/callback-promise/issues"
+  },
+  "homepage": "https://github.com/duzun/callback-promise#readme"
+}
