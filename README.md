@@ -17,14 +17,14 @@ fs.readFile(filename, function (error, data) {
 });
 
 // becomes:
-pfs.readFile = cp(fs.readFile, 1, 0);
+pfs.readFile = c2p(fs.readFile, 1, 0);
 // or
-pfs.readFile = cp(fs.readFile, function (error, data) {
+pfs.readFile = c2p(fs.readFile, function (error, data) {
     if ( error ) throw error;
     return data;
 });
 // or with this
-pfs.readFile = cp(fs, 'readFile', 1, 0);
+pfs.readFile = c2p(fs, 'readFile', 1, 0);
 
 // then
 pfs.readFile(filename)
@@ -40,14 +40,14 @@ pfs.readFile(filename)
 chrome.tabs.update(tabId, props, function (tab) {});
 
 // becomes:
-pchrome.tabs.update = cp(chrome.tabs.update);
+pchrome.tabs.update = c2p(chrome.tabs.update);
 
 // or with this
-pchrome.tabs.update = cp(chrome.tabs, 'update');
+pchrome.tabs.update = c2p(chrome.tabs, 'update');
 // or
-pchrome.tabs.update = cp(chrome.tabs, chrome.tabs.update);
+pchrome.tabs.update = c2p(chrome.tabs, chrome.tabs.update);
 // or
-pchrome.tabs.update = cp(chrome.tabs.update, function (tab) {
+pchrome.tabs.update = c2p(chrome.tabs.update, function (tab) {
     var error = chrome.runtime.lastError;
     if ( error ) throw error;
     return tab;
@@ -58,6 +58,13 @@ pchrome.tabs.update(tabId, props)
     .then(function (tab) {})
     .catch(function (error) {})
 ;
+```
+
+### Other use cases
+
+```javascript
+var delay = c2p(setTimeout, true);
+delay(100).then(function () { doSomethinngLater() })
 ```
 
 # to be continued ...
