@@ -1,9 +1,15 @@
 {
   "name": "callback-promise",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Convert callback style APIs to Promise based APIs",
   "main": "c2p.js",
+  "files": [
+    "c2p.js",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
+    "verup": "verup",
     "test": "jasmine-node spec",
     "test-dev": "karma start ./spec/karma.conf.js"
   },

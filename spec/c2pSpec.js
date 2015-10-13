@@ -38,7 +38,16 @@
             cb.call(_this, {args:args, that:_this});
         });
     }
-    
+
+    function fnf(cb_, arg1, arg2) {
+        var args = slice.call(arguments);
+        var cb = args.shift();
+        var _this = this;
+        setTimeout(function () {
+            cb.call(_this, {args:args, that:_this});
+        });
+    }
+
     function nfn(arg1, arg2, cb_) {
         var args = slice.call(arguments);
         var cb = args.pop();
@@ -48,10 +57,14 @@
         });
     }
 
-    describe("c2p(fn)(args)", function () {
-        it('global.Promise or c2p.Promise should be defined', function () {
+
+    describe("c2p", function () {
+        it('c2p.Promise or global.Promise should be defined', function () {
             expect(c2p.Promise).toEqual(jasmine.any(Function));
         });
+    });
+
+    describe("c2p(fn)(args)", function () {
         it('should pass all args to fn()', function (done) {
             var a1 = Math.random();
             var a2 = function () {};
@@ -137,10 +150,21 @@
             ;
         });
     });
+
+    describe("c2p(fn, true)(args)", function () {
+        it('should accept callback as first argument of fn()', function (done) {
+            var a1 = Math.random();
+            var a2 = function () {};
+            var a3 = 'test';
+            c2p(fnf, true)(a1, a2, a3)
+            .then(function (o) {
+                expect([a1,a2,a3]).toEqual(o.args);
+            })
+            .then(done)
+            ;
+        });
+    });
   });
-
-
-
 
 }
 ('c2pSpec', typeof global == 'undefined' ? this : global));
