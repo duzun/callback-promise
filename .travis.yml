@@ -1,25 +1,21 @@
 language: node_js
-
 node_js:
-- "stable"
-- "4.1"
-- "4.0"
+- stable
+- '4.1'
+- '4.0'
 - '0.12'
 - '0.11'
 - '0.10'
-- 'iojs'
-
+- iojs
 matrix:
-    allow_failures:
-        - node_js: '0.10'
-
+  allow_failures:
+  - node_js: '0.10'
 deploy:
   provider: npm
   email: contact@duzun.me
   api_key:
-    secure: UeTmKdjg0MEmy8iK0ZmlmNww+hytHQoEkh7uhssV2Pizq2sSEKki9m64v7xe35Kwk38TcbMvrZkwtim/ZnZt1JJ2LOw8Ogz88OVviqAfkHOe2VRH8SrP3NpRFGFWLZ0JmvKGkvCLiDkLHiz+vSegUXDPwyGdpS932lyxJ5U3ntE=
+    secure: qPfURhowcriGiQ2lV7H84fU+bZw20GY8CK5tqx8JnBNOsZ88PJXccdPk8/cAvI60/V1E6y734Q3IipkWb1eTD72P3ey/mPsO1zCJcgnOEQ2S72A84dQT0/ByPAlCe8/P73ydUUzyk04YDTa6koLy0RqayevNkW8pgdkj+cRP0zC+hh3+afZAvGo04E+4O93+qPj2sEOty8zFmdq6U2fJsB7NOQLuHhMduAq+SFS1lCGqb2HmmTecojnQRlm1yOuVZCauZxwhFMetofU/okfvF3s04XmfMOVP0HMYDxXGlMnEkj0gjtA0oXT2Dj28mzMvutHBngtheXBad/4HveTiXc8PpGbJ+IbYH56/TyBszW7no0GMonK5KFrQraztKbntX7KgvcakGZE4PRumFZbyUHx/ZCstEUkjuVVyVZZZTTfYVCEsdXIkVN19ysvEW7YyOlP64LNtq2x6br+GXVqy9aBd0gRml0CepdGPA4eb4CKFe6sK7mETvC2PqIXr4302a5QycC163dhbJeiPfF68FQ+FFMhudg7AqFofVHe10aMlGuLVvix86LJtmC6Krhaivicuv9RCiPW+fgi43Vi7rMBy4jzNsAY+YxvymPweRIEYX73xuMKjw3FAFVmuouib0BO8XLeMmB8vnIrM15uZIkiLR8/999fSvoHbNmXvJvw=
   on:
     tags: true
     repo: duzun/callback-promise
-
 sudo: false
