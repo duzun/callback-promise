@@ -1,4 +1,4 @@
-# callback-promise
+# callback-promise [![Build Status](https://travis-ci.org/duzun/callback-promise.svg?branch=master)](https://travis-ci.org/duzun/callback-promise)
 Convert callback style APIs to Promise based APIs
 
 ## Examples
