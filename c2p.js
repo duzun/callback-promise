@@ -89,7 +89,7 @@
                 if ( typeof resultArgNo == FUNCTION ) {
                     cb = function (res) {
                         try {
-                            res = resultArgNo(arguments);
+                            res = resultArgNo.apply(_this, arguments);
                             resolve(res);
                         }
                         catch(error) {
