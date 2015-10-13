@@ -29,7 +29,7 @@
     if(!c2p.Promise) {
         console.warn('Warning: No Promise support!');
         try {
-            c2p.Promise = require('es6-promise');
+            c2p.Promise = require('es6-promise').Promise;
         }
         catch(err){}
     }
