@@ -28,6 +28,10 @@
 
     if(!c2p.Promise) {
         console.warn('Warning: No Promise support!');
+        try {
+            c2p.Promise = require('es6-promise');
+        }
+        catch(err){}
     }
 
     function fn(arg1, arg2, cb_) {
