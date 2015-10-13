@@ -49,6 +49,9 @@
     }
 
     describe("c2p(fn)(args)", function () {
+        it('global.Promise or c2p.Promise should be defined', function () {
+            expect(c2p.Promise).toEqual(jasmine.any(Function));
+        });
         it('should pass all args to fn()', function (done) {
             var a1 = Math.random();
             var a2 = function () {};
