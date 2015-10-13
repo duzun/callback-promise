@@ -4,7 +4,7 @@ var allTestFiles = [];
     var TEST_REGEXP = /(spec|test)\.js$/i;
 
     var pathToModule = function(path) {
-      return path.replace(/^\/base\//, '').replace(/\.js$/, '');
+        return path.replace(/^\/base\//, '').replace(/\.js$/, '');
     };
 
     for(var file in files) if(hop.call(files, file)) {

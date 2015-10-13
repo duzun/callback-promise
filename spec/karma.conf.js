@@ -5,7 +5,7 @@ module.exports = function(config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '..',
+    basePath: '../',
 
 
     // frameworks to use
@@ -20,8 +20,7 @@ module.exports = function(config) {
         // REQUIRE,
         // REQUIRE_ADAPTER,
 
-      {pattern: 'lib/*.js', included: false},
-      {pattern: 'p2peg.js', included: false},
+      {pattern: 'c2p.js', included: false},
       {pattern: 'spec/*Spec.js', included: false},
       'spec/test-main.js'
     ],
@@ -64,10 +63,10 @@ module.exports = function(config) {
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: [
-        // 'PhantomJS'
          'Chrome'
-        // , 'Firefox'
+        , 'Firefox'
         // , 'IE'
+        // , 'PhantomJS'
     ],
 
 

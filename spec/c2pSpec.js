@@ -29,22 +29,106 @@
     if(!c2p.Promise) {
         console.warn('Warning: No Promise support!');
     }
-    
-    var cbAtEnd = c2p(function (arg1, arg2, cb_) {
+
+    function fn(arg1, arg2, cb_) {
         var args = slice.call(arguments);
         var cb = args.pop();
         var _this = this;
-        setTimeout(function () { cb.call(_this, args); });
-    });
+        setTimeout(function () {
+            cb.call(_this, {args:args, that:_this});
+        });
+    }
+    
+    function nfn(arg1, arg2, cb_) {
+        var args = slice.call(arguments);
+        var cb = args.pop();
+        var _this = this;
+        setTimeout(function () {
+            cb.apply(_this, args);
+        });
+    }
 
     describe("c2p(fn)(args)", function () {
         it('should pass all args to fn()', function (done) {
             var a1 = Math.random();
-            var a2 = 'test';
-            var a3 = function () {};
-            cbAtEnd(a1, a2, a3)
-            .then(function (args) {
-                expect([a1,a2,a3]).toEqual(args);
+            var a2 = function () {};
+            var a3 = 'test';
+            c2p(fn)(a1, a2, a3)
+            .then(function (o) {
+                expect([a1,a2,a3]).toEqual(o.args);
+            })
+            .then(done)
+            ;
+        });
+        it('should catch errors in fn()', function (done) {
+            var _error;
+            try {
+                c2p(function (cb) {
+                    someError;
+                    cb();
+                })()
+                .then(function () {
+                    expect(_error).toBeFalsy('should never get here');
+                    done();
+                })
+                .catch(function (error) {
+                    expect(error).toBeTruthy('should catch an error');
+                    done();
+                })
+            }
+            catch(error) {
+                _error = error;
+            }
+            expect(_error).toBeFalsy('should not throw error synchronously');
+        });
+    });
+    describe("c2p(context, fn)(args)", function () {
+        it('should call context.fn()', function (done) {
+            var _that = {r:Math.random()};
+            c2p(_that, fn)('arg1')
+            .then(function (o) {
+                expect(_that).toEqual(o.that);
+                expect(['arg1']).toEqual(o.args);
+            })
+            .then(done)
+            ;
+        });
+        it('should call context[fn] when fn is string', function (done) {
+            var _that = {r:Math.random(),fn:fn};
+            c2p(_that, 'fn')('arg1')
+            .then(function (o) {
+                expect(_that).toBe(o.that);
+                expect(['arg1']).toEqual(o.args);
+            })
+            .then(done)
+            ;
+        });
+    });
+    describe("c2p(fn, 1, 0)(args) - node.js style", function () {
+        it('should get result from second callback argument', function (done) {
+            var res = {data:Math.random()};
+            c2p(nfn, 1, 0)(null, res)
+            .then(function (o) {
+                expect(res).toEqual(o);
+                done();
+            })
+            .catch(function (error) {
+                expect(error).toBeFalsy('should never be called');
+                done();
+            })
+            .then(done)
+            ;
+        });
+        it('should throw error from first callback argument', function (done) {
+            var _error = 'error arg';
+            c2p(nfn, 1, 0)(_error)
+            .then(function (o) {
+                expect(true).toBeFalsy('should never be called');
+                done();
+            })
+            .catch(function (error) {
+                expect(error).toEqual(_error);
+                done();
             })
             .then(done)
             ;
@@ -52,4 +136,12 @@
     });
   });
 
-}('c2pSpec', typeof global == 'undefined' ? this : global));
+
+
+
+}
+('c2pSpec', typeof global == 'undefined' ? this : global));
+
+
+
+

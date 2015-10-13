@@ -5,7 +5,7 @@
   "main": "c2p.js",
   "scripts": {
     "test": "jasmine-node spec",
-    "test-dev": "node ./spec/test-dev.js start ./spec/karma.conf.js"
+    "test-dev": "karma start ./spec/karma.conf.js"
   },
   "repository": {
     "type": "git",
