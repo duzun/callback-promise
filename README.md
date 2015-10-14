@@ -26,7 +26,7 @@ c2p.Promise = require('es6-promise').Promise; // polyfill
 
 - Convert any API based on callbacks to promises
 
-```
+```javascript
 var pAPI = {
     meth: c2p(API, API.meth, resultArgNo, errorArgNo, cbAtStart),
 };
