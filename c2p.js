@@ -15,7 +15,7 @@
  *         .catch(function (error) {})
  *
  *
- * @version 0.1.1
+ * @version 0.1.2
  */
 // -----------------------------------------------------------
 // -----------------------------------------------------------
@@ -62,6 +62,19 @@
 /*define*/([], function factory() {
 
     // -----------------------------------------------------------
+    /**
+     * Converts a callback-based function or method to promise based function.
+     * 
+     * @param any      _this      - a context object for _fn
+     * @param Function _fn        - a function (name on _this) that accepts a callback argument and optinally other arguments.
+     * @param int     resultArgNo - argument number of result in callback 
+     * @param int     errorArgNo  - argument number of error in callback 
+     * @param Boolean cbAtStart   - if _fn expects callback as first argument, set this to true
+     * 
+     * Note: All argumetns except _fn are optional
+     *
+     * @return Function that accepts same arguments as _fn, except callback, and returns a Promise
+     */
     function c2p(_this, _fn, resultArgNo, errorArgNo, cbAtStart) {
         // No _this arguments
         if ( typeof _this == FUNCTION ) {
