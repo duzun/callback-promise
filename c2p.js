@@ -14,14 +14,13 @@
  *
  *
  *   @license MIT
- *   @version 0.2.1
+ *   @version 0.2.2
  *   @repo    https://github.com/duzun/callback-promise
  *   @author  Dumitru Uzun (DUzun.Me)
  */
 // -----------------------------------------------------------
 // -----------------------------------------------------------
 // @TODO:
-// c2p(setTimeout, true)(10).then(function () { })
 // c2p(JSON, 'stringify')({some:'data'}).then(function (str) { })
 // c2p(JSON.parse)('{"some":"data"}').then(function (obj) { })
 // c2pWithCb(setTimeout, true)(cb, 10).then(function () { })
@@ -34,22 +33,24 @@
     var UNDEFINED = undefined + ''
     ,   FUNCTION  = 'function'
     ,   Promise   = global.Promise
-    ;
 
     // Native methods
-    var _hop = ({}).hasOwnProperty;
-    var _splice = [].splice;
-    var _push  = [].push || function (e) {
-        var len = this.length >>> 0;
-        this[len] = e;
-        return this.length = len+1;
-    };
+    ,   _hop = ({}).hasOwnProperty
 
-    var _unshift = [].unshift || function (e) {
-        _splice.call( arguments, 0, 0, 0, 0 );
-        _splice.apply( this, arguments );
-        return( this.length );
-    };
+    ,   _splice = [].splice
+
+    ,   _push  = [].push || function (e) {
+            var len = this.length >>> 0;
+            this[len] = e;
+            return this.length = len+1;
+        }
+
+    ,   _unshift = [].unshift || function (e) {
+            _splice.call( arguments, 0, 0, 0, 0 );
+            _splice.apply( this, arguments );
+            return( this.length );
+        }
+    ;
 
     // var _slice = [].slice;
 (
@@ -142,8 +143,18 @@
     }
 
     // -----------------------------------------------------------
-    c2p.all = c2p_all;
-
+    /**
+     * Converts all methods of _src to promise based.
+     *
+     * @param Object  _src        - an object with some methods
+     * @param Object  _dest       - promised methods go here.
+     * @param int     resultArgNo - argument number of result in callback
+     * @param int     errorArgNo  - argument number of error in callback
+     * @param Boolean cbAtStart   - if _fn expects callback as first argument, set this to true
+     *
+     *
+     * @return Object _dest
+     */
     function c2p_all(_src, _dest, resultArgNo, errorArgNo, cbAtStart) {
         if ( typeof _dest != 'object' ) {
             cbAtStart = errorArgNo;
@@ -157,6 +168,8 @@
         return _dest;
     }
     // -----------------------------------------------------------
+    c2p.all = c2p_all;
+
     /// Promise implementation used
     c2p.Promise = Promise;
 
