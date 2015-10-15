@@ -3,8 +3,6 @@
  *
  * Convert callback style APIs to Promise based APIs.
  *
- * https://github.com/duzun/callback-promise
- *
  * Usage:
  *      c2p(fs.readFile, 1, 0)(filename)
  *          .then(function (data) { })
@@ -15,7 +13,10 @@
  *         .catch(function (error) {})
  *
  *
- * @version 0.2.0
+ *   @license MIT
+ *   @version 0.2.0
+ *   @repo    https://github.com/duzun/callback-promise
+ *   @author  Dumitru Uzun (DUzun.Me)
  */
 // -----------------------------------------------------------
 // -----------------------------------------------------------
@@ -142,7 +143,7 @@
 
     // -----------------------------------------------------------
     c2p.all = c2p_all;
-    
+
     function c2p_all(_src, _dest, resultArgNo, errorArgNo, cbAtStart) {
         if ( typeof _dest != 'object' ) {
             cbAtStart = errorArgNo;
