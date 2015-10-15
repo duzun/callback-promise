@@ -27,12 +27,17 @@ c2p.Promise = require('es6-promise').Promise; // polyfill
 - Convert any API based on callbacks to promises
 
 ```javascript
+// convert speciffic methods
 var pAPI = {
     meth: c2p(API, API.meth, resultArgNo, errorArgNo, cbAtStart),
 };
 
-// @param any      _this      - a context object for _fn
-// @param Function _fn        - a function (name on _this) that accepts a callback argument and optinally other arguments.
+// or convert the entire API object
+var pAPI = c2p.all(API[, dest_pAPI], resultArgNo, errorArgNo, cbAtStart);
+
+
+// @param any      API        - a context object for API.meth
+// @param Function meth       - a function (name on API) that accepts a callback argument and optinally other arguments.
 // @param int     resultArgNo - argument number of result in callback
 // @param int     errorArgNo  - argument number of error in callback
 // @param Boolean cbAtStart   - if _fn expects callback as first argument, set this to true
@@ -52,7 +57,7 @@ pAPI.meth(arg1, arg2, ...)
 
 // equivalent with old API
 
-API.meth(arg1, arg2, ..., function (some, args, with, result, and, error){ 
+API.meth(arg1, arg2, ..., function (some, args, with, result, and, error){
     if ( error ) ...;
     ...
 })

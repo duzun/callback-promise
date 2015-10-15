@@ -74,9 +74,10 @@
             var a2 = function () {};
             var a3 = 'test';
             c2p(fn)
-            (a1, a2, a3)
+            .call(a2, a1, a2, a3)
             .then(function (o) {
-                expect([a1,a2,a3]).toEqual(o.args);
+                expect([a1,a2,a3]).toEqual(o.args, 'fn() should get all arguments passed to c2p(fn)()');
+                expect(a2).toBe(o.that, 'should pass this to fn()');
             })
             .then(done)
             ;
@@ -192,6 +193,80 @@
             ;
         });
     });
+
+    describe('c2p.all(obj)', function () {
+        it('should return an object with all methods promised', function (done) {
+            var _obj = {
+                    f: fn
+                  , n: 213
+                  , s: 'string'
+                  , o: {a:'b'}
+                  , a: [1,2,3]
+                }
+            ,   _res = c2p.all(_obj)
+            ;
+            expect(_res.n).toBe(undefined);
+            expect(_res.s).toBe(undefined);
+            expect(_res.o).toBe(undefined);
+            expect(_res.a).toBe(undefined);
+            expect(_res.f).toEqual(jasmine.any(Function));
+
+            _res.f(1,'2',[3])
+            .then(function (o) {
+                expect([1,'2',[3]]).toEqual(o.args);
+                expect(_res).toEqual(o.that);
+            })
+            .then(function () {
+                return _res.f.call(_obj, 1,'2',[3])
+                .then(function (o) {
+                    expect([1,'2',[3]]).toEqual(o.args);
+                    expect(_obj).toEqual(o.that);
+                })
+            })
+            .then(done)
+            .catch(function (error) {
+                expect(error).toBeFalsy('should not throw');
+                done();
+            })
+            ;
+        });
+    });
+
+    describe('c2p.all(obj, dest)', function () {
+        it('should promise all methods of obj on dest', function (done) {
+            var _obj = {
+                    f: fn
+                  , g: fn
+                  , n: 213
+                  , s: 'string'
+                  , o: {a:'b'}
+                  , a: [1,2,3]
+                }
+            ,   _dest = {}
+            ,   _res = c2p.all(_obj, _dest)
+            ;
+            expect(_res).toBe(_dest);
+            expect(_res.n).toBe(undefined);
+            expect(_res.s).toBe(undefined);
+            expect(_res.o).toBe(undefined);
+            expect(_res.a).toBe(undefined);
+            expect(_res.f).toEqual(jasmine.any(Function));
+            expect(_res.g).toEqual(jasmine.any(Function));
+
+            _res.f(1,'2',[3])
+            .then(function (o) {
+                expect([1,'2',[3]]).toEqual(o.args);
+                expect(_res).toEqual(o.that);
+            })
+            .then(done)
+            .catch(function (error) {
+                expect(error).toBeFalsy('should not throw');
+                done();
+            })
+            ;
+        });
+    });
+
   });
 
 }

@@ -1,6 +1,6 @@
 {
   "name": "callback-promise",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Convert callback style APIs to Promise based APIs",
   "main": "c2p.js",
   "files": [

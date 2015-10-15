@@ -15,7 +15,7 @@
  *         .catch(function (error) {})
  *
  *
- * @version 0.1.2
+ * @version 0.2.0
  */
 // -----------------------------------------------------------
 // -----------------------------------------------------------
@@ -36,19 +36,20 @@
     ;
 
     // Native methods
+    var _hop = ({}).hasOwnProperty;
     var _splice = [].splice;
     var _push  = [].push || function (e) {
         var len = this.length >>> 0;
         this[len] = e;
         return this.length = len+1;
     };
-    
+
     var _unshift = [].unshift || function (e) {
         _splice.call( arguments, 0, 0, 0, 0 );
         _splice.apply( this, arguments );
         return( this.length );
     };
-    
+
     // var _slice = [].slice;
 (
     typeof define !== FUNCTION || !define.amd ? typeof module != UNDEFINED && module.exports
@@ -64,13 +65,13 @@
     // -----------------------------------------------------------
     /**
      * Converts a callback-based function or method to promise based function.
-     * 
+     *
      * @param any      _this      - a context object for _fn
      * @param Function _fn        - a function (name on _this) that accepts a callback argument and optinally other arguments.
-     * @param int     resultArgNo - argument number of result in callback 
-     * @param int     errorArgNo  - argument number of error in callback 
+     * @param int     resultArgNo - argument number of result in callback
+     * @param int     errorArgNo  - argument number of error in callback
      * @param Boolean cbAtStart   - if _fn expects callback as first argument, set this to true
-     * 
+     *
      * Note: All argumetns except _fn are optional
      *
      * @return Function that accepts same arguments as _fn, except callback, and returns a Promise
@@ -95,14 +96,16 @@
             resultArgNo = undefined;
         }
 
-        return function (_fn_args_) {
+        return function _promised_fn_(_fn_args_) {
             var args = arguments;
-            var promise = new c2p.Promise(function (resolve, reject) {
+            var Prom = _promised_fn_.Promise || c2p.Promise || Promise;
+            var self = _this || this;
+            var promise = new Prom(function (resolve, reject) {
                 var cb = resolve;
                 if ( typeof resultArgNo == FUNCTION ) {
                     cb = function (res) {
                         try {
-                            res = resultArgNo.apply(_this, arguments);
+                            res = resultArgNo.apply(self, arguments);
                             resolve(res);
                         }
                         catch(error) {
@@ -131,19 +134,36 @@
                 }
 
                 (cbAtStart?_unshift:_push).call(args, cb);
-                _fn.apply(_this, args);
+                _fn.apply(self, args);
             });
             return promise;
         }
     }
 
     // -----------------------------------------------------------
+    c2p.all = c2p_all;
+    
+    function c2p_all(_src, _dest, resultArgNo, errorArgNo, cbAtStart) {
+        if ( typeof _dest != 'object' ) {
+            cbAtStart = errorArgNo;
+            errorArgNo = resultArgNo;
+            resultArgNo = _dest;
+            _dest = {};
+        }
+        for(var _fn in _src) if ( _hop.call(_src, _fn) && typeof _src[_fn] == FUNCTION ) {
+            _dest[_fn] = c2p(_src[_fn], resultArgNo, errorArgNo, cbAtStart);
+        }
+        return _dest;
+    }
+    // -----------------------------------------------------------
+    /// Promise implementation used
+    c2p.Promise = Promise;
+
+    // -----------------------------------------------------------
     /// Same as _.constant() in LoDash
     c2p.val = function (value) {
         return function () { return value; }
     };
-
-    c2p.Promise = Promise;
 
     return c2p;
 });
