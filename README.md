@@ -33,7 +33,7 @@ c2p.Promise = require('es6-promise').Promise; // polyfill
 ```javascript
 // convert speciffic methods
 var pAPI = {
-    meth: c2p(API, API.meth, resultArgNo, errorArgNo, cbAtStart),
+    meth: c2p([API, ]API.meth, resultArgNo, errorArgNo, cbAtStart),
 };
 
 // or convert the entire API object
@@ -46,7 +46,7 @@ var pAPI = c2p.all(API[, dest_pAPI], resultArgNo, errorArgNo, cbAtStart);
 // @param int     errorArgNo  - argument number of error in callback
 // @param Boolean cbAtStart   - if _fn expects callback as first argument, set this to true
 
-// Note: All argumetns except _fn are optional
+// Note: All argumetns except .meth are optional
 
 // @return Function that accepts same arguments as _fn, except callback, and returns a Promise
 ```
