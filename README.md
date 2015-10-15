@@ -1,5 +1,9 @@
 # callback-promise [![Build Status](https://travis-ci.org/duzun/callback-promise.svg?branch=master)](https://travis-ci.org/duzun/callback-promise)
-Convert callback style APIs to Promise based APIs
+Convert callback style APIs to Promise based APIs.
+
+Suitable for Browsers and Node.js.
+
+Pure JS for best performance, no `eval`s, `with`s or other "dangerous" constructs used.
 
 
 ## Install
