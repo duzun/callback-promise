@@ -14,7 +14,7 @@
  *
  *
  *   @license MIT
- *   @version 0.2.0
+ *   @version 0.2.1
  *   @repo    https://github.com/duzun/callback-promise
  *   @author  Dumitru Uzun (DUzun.Me)
  */
@@ -24,7 +24,7 @@
 // c2p(setTimeout, true)(10).then(function () { })
 // c2p(JSON, 'stringify')({some:'data'}).then(function (str) { })
 // c2p(JSON.parse)('{"some":"data"}').then(function (obj) { })
-
+// c2pWithCb(setTimeout, true)(cb, 10).then(function () { })
 
 
 // -----------------------------------------------------------
