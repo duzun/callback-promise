@@ -18,4 +18,9 @@ deploy:
   on:
     tags: true
     repo: duzun/callback-promise
+
+cache:
+    directories:
+        - node_modules
+    
 sudo: false

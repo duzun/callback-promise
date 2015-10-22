@@ -4,9 +4,7 @@
   "description": "Convert callback style APIs to Promise based APIs",
   "main": "c2p.js",
   "files": [
-    "c2p.js",
-    "README.md",
-    "LICENSE"
+    "c2p.js"
   ],
   "scripts": {
     "verup": "verup",
