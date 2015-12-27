@@ -1,6 +1,6 @@
 {
   "name": "callback-promise",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Convert callback style APIs to Promise based APIs",
   "main": "c2p.js",
   "files": [
@@ -42,18 +42,18 @@
     ]
   },
   "devDependencies": {
-    "es6-promise": "^3.0.x",
-    "jasmine-core": "2.2.x",
+    "es6-promise": "^3.x",
+    "jasmine-core": "2.4",
     "jasmine-node": "1.14.x",
     "karma": "0.x",
-    "karma-chrome-launcher": "0.1.x",
-    "karma-firefox-launcher": "0.1.x",
-    "karma-ie-launcher": "0.1.x",
+    "karma-chrome-launcher": "0.x",
+    "karma-firefox-launcher": "0.x",
+    "karma-ie-launcher": "0.x",
     "karma-jasmine": "0.3.x",
-    "karma-phantomjs-launcher": "0.1.x",
+    "karma-phantomjs-launcher": "0.x",
     "karma-requirejs": "0.2.x",
-    "karma-safari-launcher": "0.1.x",
-    "requirejs": "2.1.x",
-    "verup": "^1.x.x"
+    "karma-safari-launcher": "0.x",
+    "requirejs": "2.1",
+    "verup": "^1.x"
   }
 }

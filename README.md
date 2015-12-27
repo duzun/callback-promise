@@ -15,13 +15,13 @@ npm install callback-promise
 ```
 
 - Add `c2p.js` to your app using require (AMD or CommonJs) or as a script tag.
-```javascript
+```js
 var c2p = require('callback-promise');
 ```
 
 - Make sure there is a `Promise` implementation or get a polyfill like [es6-promise](https://www.npmjs.com/package/es6-promise).
 
-```javascript
+```js
 c2p.Promise = require('es6-promise').Promise; // polyfill
 ```
 
@@ -30,21 +30,22 @@ c2p.Promise = require('es6-promise').Promise; // polyfill
 
 - Convert any API based on callbacks to promises
 
-```javascript
+```js
 // convert speciffic methods
 var pAPI = {
-    meth: c2p([API, ]API.meth, resultArgNo, errorArgNo, cbAtStart),
+    meth: c2p([API, ]API.meth, resultArgNo, errorArgNo, cbAtStart, noCb),
 };
 
 // or convert the entire API object
-var pAPI = c2p.all(API[, dest_pAPI], resultArgNo, errorArgNo, cbAtStart);
+var pAPI = c2p.all(API[, dest_pAPI], resultArgNo, errorArgNo, cbAtStart, noCb);
 
 
-// @param any      API        - a context object for API.meth
+// @param any      API        - a context object for API.meth.
 // @param Function meth       - a function (name on API) that accepts a callback argument and optinally other arguments.
-// @param int     resultArgNo - argument number of result in callback
-// @param int     errorArgNo  - argument number of error in callback
-// @param Boolean cbAtStart   - if _fn expects callback as first argument, set this to true
+// @param int     resultArgNo - argument number of result in callback. If false, all arguments are considered the result.
+// @param int     errorArgNo  - argument number of error in callback.
+// @param Boolean cbAtStart   - if _fn expects callback as first argument, set this to true.
+// @param Boolean noCb        - if true, the new version of _fn doesn't accept the callback argument.
 
 // Note: All argumetns except .meth are optional
 
@@ -53,7 +54,7 @@ var pAPI = c2p.all(API[, dest_pAPI], resultArgNo, errorArgNo, cbAtStart);
 
 - Now you can use your new `pAPI`
 
-```javascript
+```js
 pAPI.meth(arg1, arg2, ...)
     .then(function(result){...})
     .catch(function(error){...})
@@ -72,7 +73,7 @@ API.meth(arg1, arg2, ..., function (some, args, with, result, and, error){
 
 ### Node API
 
-```javascript
+```js
 // Common Node.js code
 fs.readFile(filename, function (error, data) {
     if ( error ) {
@@ -83,7 +84,7 @@ fs.readFile(filename, function (error, data) {
     }
 });
 
-// becomes:
+// convert to Promise based API:
 pfs.readFile = c2p(fs.readFile, 1, 0);
 // same with explicit arguments mapping
 pfs.readFile = c2p(fs.readFile, function (error, data) {
@@ -100,10 +101,43 @@ pfs.readFile(filename)
 ;
 ```
 
+### Callback with sync return
+
+```js
+// Node.js method that accepts a callback and returns an EventEmitter
+var child = child_process.exec(command, options, function (error, stdout, stderr){ ... });
+var pid = child.pid;
+child.stdin.end();
+
+// convert to Promise base API:
+pchild_process.exec = c2p(child_process.exec, 1, 0);
+
+
+// then
+var pchild = pchild_process.exec(command, options);
+
+var child = pchild.result; // like an event in jQuery
+var pid = child.pid;
+child.stdin.end();
+
+pchild
+    .then(function (stdout){ ... })
+    .catch(function (error){ ... })
+;
+
+
+// and if you need to catch stderr, use the callback:
+var pchild = pchild_process.exec(command, options, function (error, stdout, stderr){ ... })
+    .then(function(stdout){ ... })
+    .catch(function (error){ ... })
+;
+
+```
+
 
 ### Chrome Extension API
 
-```javascript
+```js
 // Common Chrome Extension code
 chrome.tabs.update(tabId, props, function (tab) {});
 
@@ -130,7 +164,7 @@ pchrome.tabs.update(tabId, props)
 
 ### Other use cases
 
-```javascript
+```js
 var delay = c2p(setTimeout, true);
 delay(100).then(function () { doSomethingLater() })
 ```

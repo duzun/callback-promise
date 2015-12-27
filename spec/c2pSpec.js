@@ -38,7 +38,7 @@
         var args = slice.call(arguments);
         var cb = args.pop();
         var _this = this;
-        setTimeout(function () {
+        return setTimeout(function () {
             cb.call(_this, {args:args, that:_this});
         });
     }
@@ -105,6 +105,35 @@
             expect(_error).toBeFalsy('should not throw error synchronously');
         });
     });
+    describe("c2p(fn)(args..., cb)", function () {
+        it('should call cb()', function (done) {
+            var a1 = Math.random();
+            var a2 = function () {};
+            var a3 = 'test';
+            c2p(fn)
+            .call(a2, a1, a2, a3, function (o) {
+                expect([a1,a2,a3]).toEqual(o.args, 'fn() should get all arguments passed to c2p(fn)()');
+                expect(a2).toBe(o.that, 'should pass this to fn()');
+                done();
+            });
+        });
+        it('should catch errors in cb()', function (done) {
+            c2p(fn)
+            .call(123, function (o) {
+                throw true;
+                done();
+            })
+            .then(function(){
+                expect(true).toBeFalsy('should never be called');
+                done();
+            })
+            .catch(function (error) {
+                expect(error).toBeTruthy('should catch an error');
+                done();
+            })
+            ;
+        });
+    });
     describe("c2p(context, fn)(args...)", function () {
         it('should call context.fn()', function (done) {
             var _that = {r:Math.random()};
@@ -130,7 +159,7 @@
         });
     });
     describe("c2p(fn, 1, 0)(args...) - node.js style", function () {
-        it('should get result from second callback argument', function (done) {
+        it('should get result from callback\'s second argument', function (done) {
             var res = {data:Math.random()};
             c2p(nfn, 1, 0)
             (null, res)
