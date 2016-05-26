@@ -134,7 +134,7 @@
             rejecter = function (args) {
                 var error = args[errorArgNo];
                 if ( error != undefined ) throw error;
-            }
+            };
         }
 
         return function _promised_fn_(_fn_args_) {
@@ -182,7 +182,7 @@
                 promise.result = result;
             }
             return promise;
-        }
+        };
     }
 
     // -----------------------------------------------------------
@@ -220,7 +220,7 @@
     // -----------------------------------------------------------
     /// Same as _.constant() in LoDash
     c2p.val = function (value) {
-        return function () { return value; }
+        return function () { return value; };
     };
 
     return c2p;
