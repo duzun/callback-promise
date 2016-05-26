@@ -165,8 +165,8 @@ pchrome.tabs.update(tabId, props)
 ### Other use cases
 
 ```js
-var delay = c2p(setTimeout, true);
-delay(100).then(function () { doSomethingLater() })
+var wait = c2p(setTimeout, true);
+wait(100).then(function () { doSomethingLater() })
 ```
 
 
