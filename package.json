@@ -6,6 +6,7 @@
   "files": [
     "c2p.js"
   ],
+  "reveal": true,
   "scripts": {
     "verup": "verup",
     "test": "jasmine-node spec",
