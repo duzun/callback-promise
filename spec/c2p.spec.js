@@ -12,14 +12,14 @@
       ? define
       : (function (require) {
           return typeof module != 'undefined' && module.exports
-              ? function (deps, factory) { module.exports = factory(require, module, require('../c2p')); }
+              ? function (deps, factory) { module.exports = factory(require, module, require('../dist/c2p')); }
               : function (deps, factory) { global[name] = factory(require, undefined, global.c2p); }
       }
       (typeof require == 'function' ? require : function (id){return global[id]}))
   )
   /*define*/(
   ['require', 'module'
-      , '../c2p'
+      , '../dist/c2p'
   ]
   , function (require, module, c2p) {
 
@@ -91,18 +91,18 @@
                 })
                 ()
                 .then(function () {
-                    expect(_error).toBeFalsy('should never get here');
+                    expect(_error).toBeFalsy(); // 'should never get here'
                     done();
                 })
                 .catch(function (error) {
-                    expect(error).toBeTruthy('should catch an error');
+                    expect(error).toBeTruthy(); // 'should catch an error'
                     done();
                 })
             }
             catch(error) {
                 _error = error;
             }
-            expect(_error).toBeFalsy('should not throw error synchronously');
+            expect(_error).toBeFalsy(); // 'should not throw error synchronously'
         });
     });
     describe("c2p(fn)(args..., cb)", function () {
@@ -124,11 +124,11 @@
                 done();
             })
             .then(function(){
-                expect(true).toBeFalsy('should never be called');
+                expect(true).toBeFalsy(); // 'should never be called'
                 done();
             })
             .catch(function (error) {
-                expect(error).toBeTruthy('should catch an error');
+                expect(error).toBeTruthy(); // 'should catch an error'
                 done();
             })
             ;
@@ -168,7 +168,7 @@
                 done();
             })
             .catch(function (error) {
-                expect(error).toBeFalsy('should never be called');
+                expect(error).toBeFalsy(); // 'should never be called'
                 done();
             })
             .then(done)
@@ -179,7 +179,7 @@
             c2p(nfn, 1, 0)
             (_error)
             .then(function (o) {
-                expect(true).toBeFalsy('should never be called');
+                expect(true).toBeFalsy(); // 'should never be called'
                 done();
             })
             .catch(function (error) {
@@ -254,7 +254,7 @@
             })
             .then(done)
             .catch(function (error) {
-                expect(error).toBeFalsy('should not throw');
+                expect(error).toBeFalsy(); // 'should not throw'
                 done();
             })
             ;
@@ -289,7 +289,7 @@
             })
             .then(done)
             .catch(function (error) {
-                expect(error).toBeFalsy('should not throw');
+                expect(error).toBeFalsy(); // 'should not throw'
                 done();
             })
             ;
@@ -300,7 +300,3 @@
 
 }
 ('c2pSpec', typeof global == 'undefined' ? this : global));
-
-
-
-

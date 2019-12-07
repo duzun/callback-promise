@@ -1,16 +1,23 @@
 {
   "name": "callback-promise",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Convert callback style APIs to Promise based APIs",
-  "main": "c2p.js",
+  "module": "c2p.js",
+  "main": "dist/c2p.js",
+  "unpkg": "dist/c2p.min.js",
   "files": [
-    "c2p.js"
+    "c2p.js",
+    "dist/*.js"
   ],
   "reveal": true,
   "scripts": {
-    "verup": "verup",
-    "test": "jasmine-node spec",
-    "test-dev": "karma start ./spec/karma.conf.js"
+    "build": "npx rollup -c rollup.config.js",
+    "test": "npx jest",
+    "test-node": "npm run test",
+    "test-cov": "npx jest --coverage",
+    "test-dev": "npm run build && npm run test-cov",
+    "test-browser": "npx karma start ./spec/karma.conf.js",
+    "verup": "verup"
   },
   "repository": {
     "type": "git",
@@ -43,21 +50,24 @@
     ]
   },
   "devDependencies": {
-    "es6-promise": "^3.x",
-    "jasmine-core": "2.4",
-    "jasmine-node": "1.14.x",
-    "karma": "0.x",
-    "karma-chrome-launcher": "0.x",
-    "karma-firefox-launcher": "0.x",
-    "karma-ie-launcher": "0.x",
-    "karma-jasmine": "0.3.x",
-    "karma-phantomjs-launcher": "0.x",
-    "karma-requirejs": "0.2.x",
-    "karma-safari-launcher": "0.x",
-    "requirejs": "2.1",
+    "@babel/core": "^7.7.5",
+    "@babel/preset-env": "^7.7.5",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-terser": "^5.1.2",
+    "es6-promise": "^4.2.8",
+    "karma": "^4.4.1",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-firefox-launcher": "^1.2.0",
+    "karma-ie-launcher": "^1.0.0",
+    "karma-jasmine": "^2.0.1",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "karma-requirejs": "^1.1.0",
+    "karma-safari-launcher": "^1.0.0",
+    "requirejs": "^2.3.6",
     "verup": "^1.x"
   },
   "jshintConfig": {
+    "esversion": 9,
     "laxbreak": true,
     "laxcomma": true,
     "undef": true,

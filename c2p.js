@@ -14,7 +14,7 @@
  *
  *
  *   @license MIT
- *   @version 0.3.0
+ *   @version 0.4.0
  *   @repo    https://github.com/duzun/callback-promise
  *   @author  Dumitru Uzun (DUzun.Me)
  */
@@ -25,45 +25,13 @@
 // c2p(JSON.parse)('{"some":"data"}').then(function (obj) { })
 // c2pWithCb(setTimeout, true)(cb, 10).then(function () { })
 
-
 // -----------------------------------------------------------
-;(function (name, global, undefined) {
-    'use strict';
 
-    var UNDEFINED = undefined + ''
-    ,   FUNCTION  = 'function'
-    ,   Promise   = global.Promise
-
-    // Native methods
-    ,   _hop = ({}).hasOwnProperty
-
-    ,   _splice = [].splice
-
-    ,   _push  = [].push || function (e) {
-            var len = this.length >>> 0;
-            this[len] = e;
-            return this.length = len+1;
-        }
-
-    ,   _unshift = [].unshift || function (e) {
-            _splice.call( arguments, 0, 0, 0, 0 );
-            _splice.apply( this, arguments );
-            return( this.length );
-        }
-    ;
-
-    // var _slice = [].slice;
-(
-    typeof define !== FUNCTION || !define.amd ? typeof module != UNDEFINED && module.exports
-    // CommonJS
-  ? function (deps, factory) { module.exports = factory(); }
-    // Browser
-  : function (deps, factory) { global[name] = factory(); }
-    // AMD
-  : define
-)
-/*define*/([], function factory() {
-
+    // Native methods/constructs
+    const GlobalPromise = typeof Promise != 'undefined' ? Promise : undefined;
+    const { hasOwnProperty } = ({});
+    const { unshift, push } = [];
+    
     // -----------------------------------------------------------
     /**
      * Converts a callback-based function or method to promise based function.
@@ -75,13 +43,13 @@
      * @param Boolean cbAtStart   - if _fn expects callback as first argument, set this to true.
      * @param Boolean noCb        - if true, the new version of _fn doesn't accept the callback argument.
      *
-     * Note: All argumetns except _fn are optional
+     * Note: All arguments except _fn are optional
      *
      * @return Function that accepts same arguments as _fn, except callback, and returns a Promise
      */
-    function c2p(_this, _fn, resultArgNo, errorArgNo, cbAtStart, noCb) {
+    export default function c2p(_this, _fn, resultArgNo, errorArgNo, cbAtStart, noCb) {
         // No _this arguments
-        if ( typeof _this == FUNCTION ) {
+        if ( isFunction(_this) ) {
             // shift arguments to the right
             noCb        = cbAtStart;
             cbAtStart   = errorArgNo;
@@ -93,7 +61,7 @@
         // There is _this argument
         else {
             // with _this, _fn could be method name
-            if ( typeof _fn != FUNCTION ) {
+            if ( !isFunction(_fn) ) {
                 _fn = _this[_fn];
             }
         }
@@ -117,7 +85,7 @@
             };
         }
         else
-        if ( typeof resultArgNo == FUNCTION ) {
+        if ( isFunction(resultArgNo) ) {
             resolver = function (args, resolve, promise, self) {
                 resolve(resultArgNo.apply(_this || self, args));
             };
@@ -139,7 +107,7 @@
 
         return function _promised_fn_(_fn_args_) {
             var args = arguments;
-            var Prom = _promised_fn_.Promise || c2p.Promise || Promise;
+            var Prom = _promised_fn_.Promise || c2p.Promise || GlobalPromise;
             var self = _this || this;
             var result;
             var promise = new Prom(function (resolve, reject) {
@@ -161,7 +129,7 @@
                     cbArg = args[cbIdx];
 
                     // args contains a callback
-                    if ( typeof cbArg == FUNCTION ) {
+                    if ( isFunction(cbArg) ) {
                         args[cbIdx] = cb;
                     }
                     // args doesn't contain a callback
@@ -171,7 +139,7 @@
                 }
                 // add callback to args
                 if ( !cbArg ) {
-                    (cbAtStart?_unshift:_push).call(args, cb);
+                    (cbAtStart?unshift:push).call(args, cb);
                 }
 
                 result = _fn.apply(self, args);
@@ -206,7 +174,7 @@
             resultArgNo = _dest;
             _dest = {};
         }
-        for(var _fn in _src) if ( _hop.call(_src, _fn) && typeof _src[_fn] == FUNCTION ) {
+        for(var _fn in _src) if ( hasOwnProperty.call(_src, _fn) && isFunction(_src[_fn]) ) {
             _dest[_fn] = c2p(_src[_fn], resultArgNo, errorArgNo, cbAtStart, noCb);
         }
         return _dest;
@@ -215,16 +183,17 @@
     c2p.all = c2p_all;
 
     /// Promise implementation used
-    c2p.Promise = Promise;
+    c2p.Promise = GlobalPromise;
 
     // -----------------------------------------------------------
     /// Same as _.constant() in LoDash
-    c2p.val = function (value) {
-        return function () { return value; };
-    };
+    c2p.val = _constant;
 
-    return c2p;
-});
+    function _constant(value) {
+        return () => value;
+    }
+    
+    function isFunction(fn) {
+        return typeof fn === 'function';
+    }
     // -----------------------------------------------------------
-}
-('c2p', typeof global == 'undefined' ? this : global));

@@ -1,16 +1,53 @@
 language: node_js
 node_js:
-- stable
-- '4.1'
-- '4.0'
-- '0.12'
-- '0.11'
-- '0.10'
-- iojs
+  - "stable"
+  - '12.0'
+  - '11.0'
+  - '10.0'
+  - '9.0'
+  - '8.0'
+  - '7.0'
+  - '6.0'
+  - '5.0'
+  - '4.0'
+  - '0.12'
+  - '0.11'
+  - '0.10'
 
 matrix:
+  fast_finish: true
+  include:
+    - node_js: stable
+      env: COMMAND=test-browser
+    - node_js: stable
+      env: COMMAND=test-cov
   allow_failures:
-  - node_js: '0.10'
+    - node_js: '5.0'
+    - node_js: '4.0'
+    - node_js: '0.12'
+    - node_js: '0.11'
+    - node_js: '0.10'
+
+addons:
+  firefox: latest
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
+
+before_install:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - sleep 3
+    
+after_script:
+  - npx codecov
+
+script: npm run ${COMMAND:-"test-node"}
+
+env:
+  - COMMAND=test-node
 
 deploy:
   provider: npm
@@ -22,7 +59,9 @@ deploy:
     repo: duzun/callback-promise
 
 cache:
-    directories:
-        - node_modules
+  directories:
+    - node_modules
 
-sudo: false
+sudo: required
+
+dist: trusty

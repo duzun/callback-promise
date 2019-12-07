@@ -2,10 +2,10 @@
 // Generated on Tue Nov 25 2014 00:56:18 GMT+0200 (GTB Standard Time)
 
 module.exports = function(config) {
-  config.set({
+  var configuration = {
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '../',
+    basePath: '..',
 
 
     // frameworks to use
@@ -20,8 +20,8 @@ module.exports = function(config) {
         // REQUIRE,
         // REQUIRE_ADAPTER,
 
-      {pattern: 'c2p.js', included: false},
-      {pattern: 'spec/*Spec.js', included: false},
+      { pattern: 'dist/c2p.js', included: false },
+      { pattern: 'spec/*.spec.js', included: false },
       'spec/test-main.js'
     ],
 
@@ -69,9 +69,22 @@ module.exports = function(config) {
         // , 'PhantomJS'
     ],
 
+    customLaunchers: {
+      Chrome_travis_ci: {
+          base: 'Chrome',
+          flags: ['--no-sandbox']
+      }
+    },
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: false
-  });
+  };
+
+  if ( process.env.TRAVIS ) {
+    configuration.browsers = ['Chrome_travis_ci', 'Firefox'/*, 'PhantomJS'*/];
+    configuration.singleRun = true;
+  }
+  
+  config.set(configuration);
 };
