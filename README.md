@@ -1,4 +1,4 @@
-# callback-promise [![Build Status](https://travis-ci.org/duzun/callback-promise.svg?branch=master)](https://travis-ci.org/duzun/callback-promise)
+# callback-promise [![Build Status](https://travis-ci.org/duzun/callback-promise.svg?branch=master)](https://travis-ci.org/duzun/callback-promise) [![codecov](https://codecov.io/gh/duzun/callback-promise/branch/master/graph/badge.svg)](https://codecov.io/gh/duzun/callback-promise)
 Convert callback style APIs to Promise based APIs.
 
 Suitable for Browsers and Node.js.

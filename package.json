@@ -60,9 +60,7 @@
     "karma-firefox-launcher": "^1.2.0",
     "karma-ie-launcher": "^1.0.0",
     "karma-jasmine": "^2.0.1",
-    "karma-phantomjs-launcher": "^1.0.4",
     "karma-requirejs": "^1.1.0",
-    "karma-safari-launcher": "^1.0.0",
     "requirejs": "^2.3.6",
     "verup": "^1.x"
   },
