@@ -30,8 +30,8 @@
     // Native methods/constructs
     const GlobalPromise = typeof Promise != 'undefined' ? Promise : undefined;
     const { hasOwnProperty } = ({});
-    const { unshift, push } = [];
-    
+    const { unshift, push, slice } = [];
+
     // -----------------------------------------------------------
     /**
      * Converts a callback-based function or method to promise based function.
@@ -100,21 +100,21 @@
         if ( errorArgNo != undefined ) {
             errorArgNo = +errorArgNo || 0;
             rejecter = function (args) {
-                var error = args[errorArgNo];
+                let error = args[errorArgNo];
                 if ( error != undefined ) throw error;
             };
         }
 
         return function _promised_fn_(_fn_args_) {
-            var args = arguments;
-            var Prom = _promised_fn_.Promise || c2p.Promise || GlobalPromise;
-            var self = _this || this;
+            const args = arguments;
+            const Prom = _promised_fn_.Promise || c2p.Promise || GlobalPromise;
+            const self = _this || this;
             var result;
-            var promise = new Prom(function (resolve, reject) {
+            let promise = new Prom(function (resolve, reject) {
                 var cbArg;
-                var cb = function () {
+                const cb = function () {
                     try {
-                        var _args = arguments;
+                        let _args = slice.call(arguments);
                         rejecter && rejecter(_args);
                         cbArg && cbArg.apply(this, _args);
                         resolver(_args, resolve, promise, self);
@@ -192,7 +192,7 @@
     function _constant(value) {
         return () => value;
     }
-    
+
     function isFunction(fn) {
         return typeof fn === 'function';
     }

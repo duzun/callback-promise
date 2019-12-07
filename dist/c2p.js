@@ -51,7 +51,8 @@
       hasOwnProperty = _ref.hasOwnProperty;
   var _ref2 = [],
       unshift = _ref2.unshift,
-      push = _ref2.push; // -----------------------------------------------------------
+      push = _ref2.push,
+      slice = _ref2.slice; // -----------------------------------------------------------
 
   /**
    * Converts a callback-based function or method to promise based function.
@@ -133,7 +134,8 @@
 
         var cb = function cb() {
           try {
-            var _args = arguments;
+            var _args = slice.call(arguments);
+
             rejecter && rejecter(_args);
             cbArg && cbArg.apply(this, _args);
             resolver(_args, resolve, promise, self);

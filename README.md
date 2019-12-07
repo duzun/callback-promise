@@ -8,16 +8,27 @@ Pure JS for best performance, no `eval`s, `with`s or other "dangerous" construct
 
 ## Install
 
-- Copy `c2p.js` to your project or install it using npm:
+- Just add a script tag to your page (Browser):
+ 
+```html
+<script src="https://unpkg.com/callback-promise"></script>
+```
 
+- Alternatively copy `c2p.js` to your project or install it using npm:
 ```sh
 npm install callback-promise
 ```
 
-- Add `c2p.js` to your app using require (AMD or CommonJs) or as a script tag.
+- Then `import` `c2p` to your app (ESM):
 ```js
-var c2p = require('callback-promise');
+import c2p from 'callback-promise';
 ```
+
+- or `require` `c2p` (AMD or CommonJs):
+```js
+const c2p = require('callback-promise');
+```
+
 
 - Make sure there is a `Promise` implementation or get a polyfill like [es6-promise](https://www.npmjs.com/package/es6-promise).
 

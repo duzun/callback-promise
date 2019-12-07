@@ -34,6 +34,7 @@
         catch(err){}
     }
 
+    // Last argument of fn() is the callback, which receives { args, that }
     function fn(arg1, arg2, cb_) {
         var args = slice.call(arguments);
         var cb = args.pop();
@@ -43,6 +44,7 @@
         });
     }
 
+    // First argument of fnf() is the callback (setTimeout)
     function fnf(cb_, arg1, arg2) {
         var args = slice.call(arguments);
         var cb = args.shift();
@@ -52,6 +54,7 @@
         });
     }
 
+    // Last argument of nfn() is the callback, which receives arguments of nfn()
     function nfn(arg1, arg2, cb_) {
         var args = slice.call(arguments);
         var cb = args.pop();
@@ -134,6 +137,23 @@
             ;
         });
     });
+
+    describe("c2p(fn, false)(args..., cb)", function () {
+        it('should pass all args as the first argument to fn()', function (done) {
+            var a1 = Math.random();
+            var a2 = function () {};
+            var a3 = 'test';
+            c2p(nfn, false)
+            .call(a2, a1, a2, a3)
+            .then(function (args) {
+                log('args', args);
+                expect([a1,a2,a3]).toEqual(args, 'fn(args) should get all arguments passed to c2p(fn)() as the first argument');
+            })
+            .then(done)
+            ;
+        });
+    });
+
     describe("c2p(context, fn)(args...)", function () {
         it('should call context.fn()', function (done) {
             var _that = {r:Math.random()};
@@ -293,6 +313,19 @@
                 done();
             })
             ;
+        });
+    });
+
+    describe('c2p.val(any)', function () {
+        it('should return a function that returns a constant value', function () {
+            let val = Math.random();
+            let fn = c2p.val(val);
+            expect(fn()).toBe(val);
+            expect(fn('ignore')).toBe(val);
+
+            let val2 = Math.random();
+            let fn2 = c2p.val(val2);
+            expect(fn2()).toBe(val2);
         });
     });
 
