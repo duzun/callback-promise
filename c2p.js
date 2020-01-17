@@ -14,7 +14,7 @@
  *
  *
  *   @license MIT
- *   @version 0.4.0
+ *   @version 0.4.1
  *   @repo    https://github.com/duzun/callback-promise
  *   @author  Dumitru Uzun (DUzun.Me)
  */
@@ -155,6 +155,18 @@
 
     // -----------------------------------------------------------
     /**
+     * Convert a promise to Node.js style callback call.
+     *
+     * @param {Primise} promise
+     * @param {Function(error, result)} cb
+     */
+    function p2c(promise, cb) {
+        cb && promise.then((r) => cb(undefined, r), cb);
+        return promise;
+    }
+
+    // -----------------------------------------------------------
+    /**
      * Converts all methods of _src to promise based.
      *
      * @param Object  _src        - an object with some methods
@@ -181,6 +193,7 @@
     }
     // -----------------------------------------------------------
     c2p.all = c2p_all;
+    c2p.p2c = p2c;
 
     /// Promise implementation used
     c2p.Promise = GlobalPromise;

@@ -34,7 +34,7 @@
    *
    *
    *   @license MIT
-   *   @version 0.4.0
+   *   @version 0.4.1
    *   @repo    https://github.com/duzun/callback-promise
    *   @author  Dumitru Uzun (DUzun.Me)
    */
@@ -173,6 +173,20 @@
   } // -----------------------------------------------------------
 
   /**
+   * Convert a promise to Node.js style callback call.
+   *
+   * @param {Primise} promise
+   * @param {Function(error, result)} cb
+   */
+
+  function p2c(promise, cb) {
+    cb && promise.then(function (r) {
+      return cb(undefined, r);
+    }, cb);
+    return promise;
+  } // -----------------------------------------------------------
+
+  /**
    * Converts all methods of _src to promise based.
    *
    * @param Object  _src        - an object with some methods
@@ -184,6 +198,7 @@
    *
    * @return Object _dest
    */
+
 
   function c2p_all(_src, _dest, resultArgNo, errorArgNo, cbAtStart, noCb) {
     if (_typeof(_dest) != 'object') {
@@ -204,7 +219,8 @@
   } // -----------------------------------------------------------
 
 
-  c2p.all = c2p_all; /// Promise implementation used
+  c2p.all = c2p_all;
+  c2p.p2c = p2c; /// Promise implementation used
 
   c2p.Promise = GlobalPromise; // -----------------------------------------------------------
   /// Same as _.constant() in LoDash
