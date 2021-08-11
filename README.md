@@ -6,6 +6,23 @@ Suitable for Browsers and Node.js.
 
 Pure JS for best performance, no `eval`s, `with`s or other "dangerous" constructs used.
 
+## Breaking Changes
+
+#### **v0.5.0**
+ - The `this` of the arguments transformation function became the promise:
+
+```js
+const papi = c2p(obj, meth, function (...args) {
+    const context = this; 
+    // in v0.4 context === obj, 
+    // in v0.5 context.this === obj, 
+    //     and context is the promise object returned by papi()
+    ...
+});
+
+let promise = papi(x, y, z);
+// promise.this === obj
+```
 
 ## Install
 

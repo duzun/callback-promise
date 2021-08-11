@@ -64,10 +64,13 @@
         });
     }
 
+    function any(Constructor) {
+        return (typeof jasmine == 'undefined' ? expect : jasmine).any(Constructor);
+    }
 
     describe("c2p", function () {
         it('c2p.Promise or global.Promise should be defined', function () {
-            expect(c2p.Promise).toEqual(jasmine.any(Function));
+            expect(c2p.Promise).toEqual(any(Function));
         });
     });
 
@@ -146,7 +149,7 @@
             c2p(nfn, false)
             .call(a2, a1, a2, a3)
             .then(function (args) {
-                log('args', args);
+                // log('args', args);
                 expect([a1,a2,a3]).toEqual(args, 'fn(args) should get all arguments passed to c2p(fn)() as the first argument');
             })
             .then(done)
@@ -185,11 +188,9 @@
             (null, res)
             .then(function (o) {
                 expect(res).toEqual(o);
-                done();
             })
             .catch(function (error) {
                 expect(error).toBeFalsy(); // 'should never be called'
-                done();
             })
             .then(done)
             ;
@@ -200,11 +201,9 @@
             (_error)
             .then(function (o) {
                 expect(true).toBeFalsy(); // 'should never be called'
-                done();
             })
             .catch(function (error) {
                 expect(error).toEqual(_error);
-                done();
             })
             .then(done)
             ;
@@ -218,6 +217,9 @@
             var a3 = 'test';
             c2p(fnf, true)(a1, a2, a3)
             .then(function (o) {
+                // expect(a1).toEqual(o.args[0]);
+                // expect(a2).toBe(o.args[1]);
+                // expect(a3).toEqual(o.args[2]);
                 expect([a1,a2,a3]).toEqual(o.args);
             })
             .then(done)
@@ -258,7 +260,7 @@
             expect(_res.s).toBe(undefined);
             expect(_res.o).toBe(undefined);
             expect(_res.a).toBe(undefined);
-            expect(_res.f).toEqual(jasmine.any(Function));
+            expect(_res.f).toEqual(any(Function));
 
             _res.f(1,'2',[3])
             .then(function (o) {
@@ -299,8 +301,8 @@
             expect(_res.s).toBe(undefined);
             expect(_res.o).toBe(undefined);
             expect(_res.a).toBe(undefined);
-            expect(_res.f).toEqual(jasmine.any(Function));
-            expect(_res.g).toEqual(jasmine.any(Function));
+            expect(_res.f).toEqual(any(Function));
+            expect(_res.g).toEqual(any(Function));
 
             _res.f(1,'2',[3])
             .then(function (o) {
