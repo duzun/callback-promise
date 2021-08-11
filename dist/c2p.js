@@ -1,10 +1,12 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
-  (global = global || self, global.c2p = factory());
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.c2p = factory());
 }(this, (function () { 'use strict';
 
   function _typeof(obj) {
+    "@babel/helpers - typeof";
+
     if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
       _typeof = function (obj) {
         return typeof obj;
@@ -19,22 +21,10 @@
   }
 
   /**
-   * callback-promise
-   *
    * Convert callback style APIs to Promise based APIs.
    *
-   * Usage:
-   *      c2p(fs.readFile, 1, 0)(filename)
-   *          .then(function (data) { })
-   *          .catch(function (error) { })
-   *
-   *      c2p(chrome.tabs, 'update')(tabId, props)
-   *         .then(function (tab) {})
-   *         .catch(function (error) {})
-   *
-   *
    *   @license MIT
-   *   @version 0.4.1
+   *   @version 0.5.0
    *   @repo    https://github.com/duzun/callback-promise
    *   @author  Dumitru Uzun (DUzun.Me)
    */
@@ -67,6 +57,15 @@
    * Note: All arguments except _fn are optional
    *
    * @return Function that accepts same arguments as _fn, except callback, and returns a Promise
+   *
+   * Usage:
+   *      c2p(fs.readFile, 1, 0)(filename)
+   *          .then(function (data) { })
+   *          .catch(function (error) { })
+   *
+   *      c2p(chrome.tabs, 'update')(tabId, props)
+   *         .then(function (tab) {})
+   *         .catch(function (error) {})
    */
 
   function c2p(_this, _fn, resultArgNo, errorArgNo, cbAtStart, noCb) {
@@ -81,11 +80,11 @@
       _this = undefined;
     } // There is _this argument
     else {
-        // with _this, _fn could be method name
-        if (!isFunction(_fn)) {
-          _fn = _this[_fn];
-        }
+      // with _this, _fn could be method name
+      if (!isFunction(_fn)) {
+        _fn = _this[_fn];
       }
+    }
 
     if (resultArgNo === true && cbAtStart == undefined) {
       cbAtStart = resultArgNo;
@@ -105,7 +104,9 @@
       };
     } else if (isFunction(resultArgNo)) {
       resolver = function resolver(args, resolve, promise, self) {
-        resolve(resultArgNo.apply(_this || self, args));
+        // promise.this === self
+        // promise.result = _fn()
+        resolve(resultArgNo.apply(promise, args));
       };
     } else {
       resultArgNo = +resultArgNo || 0;
@@ -152,8 +153,8 @@
             args[cbIdx] = cb;
           } // args doesn't contain a callback
           else {
-              cbArg = undefined;
-            }
+            cbArg = undefined;
+          }
         } // add callback to args
 
 
@@ -162,7 +163,8 @@
         }
 
         result = _fn.apply(self, args);
-      }); // Kind of event.result in jQuery
+      });
+      if (self) promise["this"] = self; // Kind of event.result in jQuery
 
       if (result != undefined) {
         promise.result = result;
