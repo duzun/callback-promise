@@ -1,3 +1,4 @@
+os: linux
 language: node_js
 node_js:
   - "stable"
@@ -6,7 +7,7 @@ node_js:
   - '10.0'
   - '9.0'
 
-matrix:
+jobs:
   fast_finish: true
   include:
     - node_js: stable
@@ -14,6 +15,7 @@ matrix:
     - node_js: stable
       env: COMMAND=test-cov
   allow_failures:
+    - node_js: '10.0'
     - node_js: '9.0'
 
 addons:
@@ -36,7 +38,7 @@ env:
 deploy:
   provider: npm
   email: contact@duzun.me
-  api_key:
+  api_token:
     secure: qPfURhowcriGiQ2lV7H84fU+bZw20GY8CK5tqx8JnBNOsZ88PJXccdPk8/cAvI60/V1E6y734Q3IipkWb1eTD72P3ey/mPsO1zCJcgnOEQ2S72A84dQT0/ByPAlCe8/P73ydUUzyk04YDTa6koLy0RqayevNkW8pgdkj+cRP0zC+hh3+afZAvGo04E+4O93+qPj2sEOty8zFmdq6U2fJsB7NOQLuHhMduAq+SFS1lCGqb2HmmTecojnQRlm1yOuVZCauZxwhFMetofU/okfvF3s04XmfMOVP0HMYDxXGlMnEkj0gjtA0oXT2Dj28mzMvutHBngtheXBad/4HveTiXc8PpGbJ+IbYH56/TyBszW7no0GMonK5KFrQraztKbntX7KgvcakGZE4PRumFZbyUHx/ZCstEUkjuVVyVZZZTTfYVCEsdXIkVN19ysvEW7YyOlP64LNtq2x6br+GXVqy9aBd0gRml0CepdGPA4eb4CKFe6sK7mETvC2PqIXr4302a5QycC163dhbJeiPfF68FQ+FFMhudg7AqFofVHe10aMlGuLVvix86LJtmC6Krhaivicuv9RCiPW+fgi43Vi7rMBy4jzNsAY+YxvymPweRIEYX73xuMKjw3FAFVmuouib0BO8XLeMmB8vnIrM15uZIkiLR8/999fSvoHbNmXvJvw=
   on:
     tags: true
@@ -46,6 +48,6 @@ cache:
   directories:
     - node_modules
 
-sudo: required
+# sudo: required
 
 dist: trusty
